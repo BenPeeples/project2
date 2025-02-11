@@ -92,10 +92,10 @@ int main() {
 	cout << "Search Type: <b>" << **st << "</b>" << endl;
 	cout << "<p>Your result: "
 		 << **book << " " << **chapter << ":" << **verse 
-		 << "<em>" 
+		 << " " 
 		// This is to display the number of verses, its italicized << **nv
 
-		 <<  verseObj.getVerse() <<"</em></p>" << endl;
+		 <<  verseObj.getVerse() <<"</p>" << endl;
   }
   else {
 	  cout << "<p>Invalid Input: <em>report the more specific problem.</em></p>" << endl;
