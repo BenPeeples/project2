@@ -47,7 +47,7 @@ int main() {
   // GET THE INPUT DATA
   // browser sends us a string of field name/value pairs from HTML form
   // retrieve the value for each appropriate field name
-  form_iterator st = cgi.getElement("search_type");
+  //form_iterator st = cgi.getElement("search_type");
   form_iterator book = cgi.getElement("book");
   form_iterator chapter = cgi.getElement("chapter");
   form_iterator verse = cgi.getElement("verse");
@@ -55,32 +55,91 @@ int main() {
 
   // Convert and check input data
   bool validInput = false;
+  bool validChap = false;
+  bool validBook = false;
+  bool validVerse = false;
+  bool validVerseNum = false;
+
+  int bookNumber = 0;
+  int chapterNumber = 0;
+  int verseNumber = 0;
+  int multipleVerseNumbers = 0;
+
   if (chapter != cgi.getElements().end()) {
-	 int chapterNum = chapter->getIntegerValue();
-	 if (chapterNum > 150) {
-		 cout << "<p>The chapter number (" << chapterNum << ") is too high.</p>" << endl;
+	 int chapterNumber = chapter->getIntegerValue();
+	 if (chapterNumber > 150) {
+		 cout << "<p>The chapter number (" << chapterNumber << ") is too high.</p>" << endl;
 	 }
-	 else if (chapterNum <= 0) {
+	 else if (chapterNumber <= 0) {
 		 cout << "<p>The chapter must be a positive number.</p>" << endl;
 	 }
 	 else
-		 validInput = true;
+		 validChap = true;
+  }
+  else {
+	  cout << "<p> No chapter number input. Please input a chapter number between 1 and 150.</p>" << endl;
+  }
+  if (book != cgi.getElements().end()) {
+	  if (bookNumber > 66 || bookNumber < 1) {
+		  cout << "<p> Invalid Book Input: Book Number ( " << bookNumber << " ) is too high. </p>" << endl;
+	  }
+	  else if (bookNumber < 1) {
+		  cout << "<p> Invalid Book Input: Book Number  ( " << bookNumber << " ) is not a positive number. </p>" << endl;
+	  }
+	  else{
+		  validBook = true;
+	  }
+  }
+  else {
+	  cout << "<p> No book number input. Please input a book number between 1 and 66.</p>" << endl;
   }
   
   /* TO DO: OTHER INPUT VALUE CHECKS ARE NEEDED ... but that's up to you! */
-
+  if(verse != cgi.getElements().end()){
+	  if (verseNumber <= 0) {
+		  cout << "<p> Invalid Verse Input: Verse Number ( " << verseNumber << " ) is not a positive number. </p>" << endl;
+	  }
+	  else {
+		  validVerse = true;
+	  }
+  }
+  else {
+	  cout << "<p> No verse number input. Please input a verse number between ---- and ----.</p>" << endl;
+  }
+  if (validVerse && validBook && validChap) {
+	  validInput = true;
+  }
+  
   /* TO DO: PUT CODE HERE TO CALL YOUR BIBLE CLASS FUNCTIONS
    *        TO LOOK UP THE REQUESTED VERSES
    */
   Bible webBible("/home/class/csc3004/Bibles/web-complete");
-  int b = book->getIntegerValue();
-  int c = chapter->getIntegerValue();
-  int v = verse->getIntegerValue();
+  
   LookupResult result;
 
-  Ref refObj(b, c, v);
-
-  Verse verseObj = webBible.lookup(refObj, result);
+  Ref refObj(bookNumber, chapterNumber, verseNumber);
+  Verse verseObj;
+  if (multipleVerseNumbers >= 1) {
+	  for (int i = 0; i < multipleVerseNumbers; i++) {
+		  if (validInput) {
+			  // cout << "Search Type: <b>" << **st << "</b>" << endl;
+			  cout << "<p>Your result: "
+				  << refObj.getBookName() << " " << **chapter << ":" << **verse
+				  << " "
+				  << **nv
+				  << verseObj.getVerse() << "</p>" << endl;
+			  verseObj = webBible.nextVerse(result);
+		  }
+		  if (result != OTHER) {
+			  cout << webBible.error(result) << endl;
+		  }
+	  }
+	  
+	  //Check and make sure the BOOK, CHAPTER, VERSE are correctly entered, 
+	  //As well as translation later.
+	  //Need to make sure you know what 
+  }
+  
 
   /* SEND BACK THE RESULTS
    * Finally we send the result back to the client on the standard output stream
@@ -88,17 +147,19 @@ int main() {
    * This string will be inserted as is inside a container on the web page, 
    * so we must include HTML formatting commands to make things look presentable!
    */
-  if (validInput) {
-	cout << "Search Type: <b>" << **st << "</b>" << endl;
-	cout << "<p>Your result: "
-		 << **book << " " << **chapter << ":" << **verse 
-		 << " " 
-		// This is to display the number of verses, its italicized << **nv
 
-		 <<  verseObj.getVerse() <<"</p>" << endl;
-  }
-  else {
-	  cout << "<p>Invalid Input: <em>report the more specific problem.</em></p>" << endl;
-  }
+
+ // if (validInput) {
+	//cout << "Search Type: <b>" << **st << "</b>" << endl;
+	//cout << "<p>Your result: "
+	//	 << **book << " " << **chapter << ":" << **verse 
+	//	 << " " 
+	//	// This is to display the number of verses, its italicized << **nv
+
+	//	 <<  verseObj.getVerse() <<"</p>" << endl;
+ // }
+ // else {
+	//  cout << "<p>Invalid Input: <em>report the more specific problem.</em></p>" << endl;
+ // }
   return 0;
 }
