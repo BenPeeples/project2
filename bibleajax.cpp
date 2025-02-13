@@ -52,7 +52,7 @@ int main() {
   form_iterator chapter = cgi.getElement("chapter");
   form_iterator verse = cgi.getElement("verse");
   form_iterator nv = cgi.getElement("num_verse");
-
+  form_iterator type = cgi.getElement("Bible_type");
   // Convert and check input data
   bool validInput = false;
   bool validChap = false;
@@ -63,6 +63,7 @@ int main() {
   int bookNumber = -5;
   int chapterNumber = -5;
   int verseNumber = -5;
+  
   
 
   if (chapter != cgi.getElements().end()) {
@@ -76,7 +77,7 @@ int main() {
 	 else
 		 validChap = true;
   }
-  if(chapter == cgi.getElements().end()) {
+  else{
 	  cout << "<p> No chapter number input. Please input a chapter number between 1 and 150.</p>" << endl;
   }
   if (book != cgi.getElements().end()) {
@@ -91,21 +92,25 @@ int main() {
 		  validBook = true;
 	  }
   }
-  if(book == cgi.getElements().end()) {
+  else{
 	  cout << "<p> No book number input. Please input a book number between 1 and 66.</p>" << endl;
   }
   
   /* TO DO: OTHER INPUT VALUE CHECKS ARE NEEDED ... but that's up to you! */
   if(verse != cgi.getElements().end()){
 	  verseNumber = verse->getIntegerValue();
-	  if (verseNumber <= 0) {
+	  if (verseNumber < 0) {
 		  cout << "<p> Invalid Verse Input: Verse Number ( " << verseNumber << " ) is not a positive number. </p>" << endl;
 	  }
+	  else if (verseNumber > 176) {
+		  cout << "<p> Invalid Verse Input: Verse Number ( " << verseNumber << " ) is too high. </p>" << endl;
+	  }
+	  
 	  else {
 		  validVerse = true;
 	  }
   }
-  if(verse == cgi.getElements().end()) {
+  else{
 	  cout << "<p> No verse number input. Please input a verse number between ---- and ----.</p>" << endl;
   }
   if (validVerse && validBook && validChap) {
@@ -116,28 +121,49 @@ int main() {
   /* TO DO: PUT CODE HERE TO CALL YOUR BIBLE CLASS FUNCTIONS
    *        TO LOOK UP THE REQUESTED VERSES
    */
-  Bible webBible("/home/class/csc3004/Bibles/web-complete");
+
+  if (type->getValue() == "World English Bible") {
+	  Bible typeBible("/home/class/csc3004/Bibles/web-complete");
+  }
+  if (type->getValue() == "King James Version") {
+	  Bible typeBible("/home/class/csc3004/Bibles/kjv-complete");
+  }
+  if (type->getValue() == "Darby Translation") {
+	  Bible typeBible("/home/class/csc3004/Bibles/dby-complete");
+  }
+  if (type->getValue() == "Young's Literal Translation") {
+	  Bible typeBible("/home/class/csc3004/Bibles/ylt-complete");
+  }
+  if (type->getValue() == "Webster Translation") {
+	  Bible typeBible("/home/class/csc3004/Bibles/webster-complete");
+  }
   
   LookupResult result;
 
   int multipleVerseNumbers = nv->getIntegerValue();
+  if(nv == cgi.getElements().end()) {
+	  cout << "<p> No number of verses. Please enter an amount of verses.</p>" << endl;
+  }
+  if (multipleVerseNumbers < 1) {
+	  cout << "<p> Invalid Input: Number of verses. Please enter a positive amount of verses.</p>" << endl;
+  }
 
   Ref refObj(bookNumber, chapterNumber, verseNumber);
-  Verse verseObj = webBible.lookup(refObj,result);
+  Verse verseObj = typeBible.lookup(refObj,result);
   if (multipleVerseNumbers >= 1) {
 	  for (int i = 0; i < multipleVerseNumbers; i++) {
 		  if (validInput) {
 			  if (result != OTHER && result != SUCCESS) {
-				  cout << webBible.error(result) << endl;
+				  cout << typeBible.error(result) << endl;
 				  break;
 			  }
 			  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-			  cout << "<p>Your result: "
-				  << refObj.getBook() << " " << **chapter << ":" << **verse
+			  cout << "<p>"
+				  << refObj.getBookName() << " " << **chapter << ":" << **verse
 				  << " "
-				  << i << " "
+				  << (i+1) << " "
 				  << verseObj.getVerse() << "</p>" << endl;
-			  verseObj = webBible.nextVerse(result);
+			  verseObj = typeBible.nextVerse(result);
 		  
 			  
 		  }
