@@ -60,13 +60,13 @@ int main() {
   bool validVerse = false;
   bool validVerseNum = false;
 
-  int bookNumber = 0;
-  int chapterNumber = 0;
-  int verseNumber = 0;
-  int multipleVerseNumbers = 0;
+  int bookNumber = -5;
+  int chapterNumber = -5;
+  int verseNumber = -5;
+  
 
   if (chapter != cgi.getElements().end()) {
-	 int chapterNumber = chapter->getIntegerValue();
+	 chapterNumber = chapter->getIntegerValue();
 	 if (chapterNumber > 150) {
 		 cout << "<p>The chapter number (" << chapterNumber << ") is too high.</p>" << endl;
 	 }
@@ -76,11 +76,12 @@ int main() {
 	 else
 		 validChap = true;
   }
-  else {
+  if(chapter == cgi.getElements().end()) {
 	  cout << "<p> No chapter number input. Please input a chapter number between 1 and 150.</p>" << endl;
   }
   if (book != cgi.getElements().end()) {
-	  if (bookNumber > 66 || bookNumber < 1) {
+	  bookNumber = book->getIntegerValue();
+	  if (bookNumber > 66) {
 		  cout << "<p> Invalid Book Input: Book Number ( " << bookNumber << " ) is too high. </p>" << endl;
 	  }
 	  else if (bookNumber < 1) {
@@ -90,12 +91,13 @@ int main() {
 		  validBook = true;
 	  }
   }
-  else {
+  if(book == cgi.getElements().end()) {
 	  cout << "<p> No book number input. Please input a book number between 1 and 66.</p>" << endl;
   }
   
   /* TO DO: OTHER INPUT VALUE CHECKS ARE NEEDED ... but that's up to you! */
   if(verse != cgi.getElements().end()){
+	  verseNumber = verse->getIntegerValue();
 	  if (verseNumber <= 0) {
 		  cout << "<p> Invalid Verse Input: Verse Number ( " << verseNumber << " ) is not a positive number. </p>" << endl;
 	  }
@@ -103,12 +105,13 @@ int main() {
 		  validVerse = true;
 	  }
   }
-  else {
+  if(verse == cgi.getElements().end()) {
 	  cout << "<p> No verse number input. Please input a verse number between ---- and ----.</p>" << endl;
   }
   if (validVerse && validBook && validChap) {
 	  validInput = true;
   }
+
   
   /* TO DO: PUT CODE HERE TO CALL YOUR BIBLE CLASS FUNCTIONS
    *        TO LOOK UP THE REQUESTED VERSES
@@ -117,22 +120,28 @@ int main() {
   
   LookupResult result;
 
+  int multipleVerseNumbers = nv->getIntegerValue();
+
   Ref refObj(bookNumber, chapterNumber, verseNumber);
-  Verse verseObj;
+  Verse verseObj = webBible.lookup(refObj,result);
   if (multipleVerseNumbers >= 1) {
 	  for (int i = 0; i < multipleVerseNumbers; i++) {
 		  if (validInput) {
+			  if (result != OTHER && result != SUCCESS) {
+				  cout << webBible.error(result) << endl;
+				  break;
+			  }
 			  // cout << "Search Type: <b>" << **st << "</b>" << endl;
 			  cout << "<p>Your result: "
-				  << refObj.getBookName() << " " << **chapter << ":" << **verse
+				  << refObj.getBook() << " " << **chapter << ":" << **verse
 				  << " "
-				  << **nv
+				  << i << " "
 				  << verseObj.getVerse() << "</p>" << endl;
 			  verseObj = webBible.nextVerse(result);
+		  
+			  
 		  }
-		  if (result != OTHER) {
-			  cout << webBible.error(result) << endl;
-		  }
+		  
 	  }
 	  
 	  //Check and make sure the BOOK, CHAPTER, VERSE are correctly entered, 
