@@ -54,9 +54,16 @@ function getresponse () {
 	//	alert("Please select a search type!");
 	//	return;
 	//}
+	BibleType = document.querySelector('input[name = "Bible_type"]:checked');
+	if (BibleType == null) {
+		alert("Please select a translation!");
+		return;
+	}
+
 	// NOTE: This page must be loaded from cs.mvnu.edu to avoid a cross-origin request violation.
 	XMLHttp.open("GET", "/class/csc3004/benpeeples/cgi-bin/bibleajax.cgi?"
 	//	+ "search_type=" + searchType.value
+		+ "Bible_type=" + BibleType.value
 		+ "&book=" + document.getElementById('book').value
 		+ "&chapter=" + document.getElementById('chapter').value
 		+ "&verse=" + document.getElementById('verse').value
