@@ -134,6 +134,7 @@ int main() {
   }
 
   Bible typeBible;
+  typeBible = Bible("/home/class/csc3004/Bibles/web-complete");
   if (**type == "World English Bible") {
 	  typeBible = Bible("/home/class/csc3004/Bibles/web-complete");
   }
