@@ -105,7 +105,6 @@ int main() {
 	  else if (verseNumber > 176) {
 		  cout << "<p> Invalid Verse Input: Verse Number ( " << verseNumber << " ) is too high. </p>" << endl;
 	  }
-	  
 	  else {
 		  validVerse = true;
 	  }
@@ -134,155 +133,44 @@ int main() {
 	  cout << "<p> Invalid Input: Number of verses. Please enter a positive amount of verses.</p>" << endl;
   }
 
-
+  Bible typeBible;
   if (**type == "World English Bible") {
-	  Bible typeBible("/home/class/csc3004/Bibles/web-complete");
-	  Ref refObj(bookNumber, chapterNumber, verseNumber);
-	  Verse verseObj = typeBible.lookup(refObj, result);
-	  if (multipleVerseNumbers >= 1) {
-		  for (int i = 0; i < multipleVerseNumbers; i++) {
-			  if (validInput) {
-				  if (result != OTHER && result != SUCCESS) {
-					  cout << typeBible.error(result) << endl;
-					  break;
-				  }
-				  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-				  cout << "<p>"
-					  << refObj.getBookName() << " " << **chapter << ":" << **verse
-					  << " "
-					  << (i + 1) << " "
-					  << verseObj.getVerse() << "</p>" << endl;
-				  verseObj = typeBible.nextVerse(result);
-
-
-			  }
-
-		  }
-	  }
+	  typeBible = Bible("/home/class/csc3004/Bibles/web-complete");
   }
   if (**type == "King James Version") {
-	  Bible typeBible("/home/class/csc3004/Bibles/kjv-complete");
-	  Ref refObj(bookNumber, chapterNumber, verseNumber);
-	  Verse verseObj = typeBible.lookup(refObj, result);
-	  if (multipleVerseNumbers >= 1) {
-		  for (int i = 0; i < multipleVerseNumbers; i++) {
-			  if (validInput) {
-				  if (result != OTHER && result != SUCCESS) {
-					  cout << typeBible.error(result) << endl;
-					  break;
-				  }
-				  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-				  cout << "<p>"
-					  << refObj.getBookName() << " " << **chapter << ":" << **verse
-					  << " "
-					  << (i + 1) << " "
-					  << verseObj.getVerse() << "</p>" << endl;
-				  verseObj = typeBible.nextVerse(result);
-
-
-			  }
-
-		  }
-	  }
+	  typeBible = Bible("/home/class/csc3004/Bibles/kjv-complete");
   }
   if (**type == "Darby Translation") {
-	  Bible typeBible("/home/class/csc3004/Bibles/dby-complete");
-	  Ref refObj(bookNumber, chapterNumber, verseNumber);
-	  Verse verseObj = typeBible.lookup(refObj, result);
-	  if (multipleVerseNumbers >= 1) {
-		  for (int i = 0; i < multipleVerseNumbers; i++) {
-			  if (validInput) {
-				  if (result != OTHER && result != SUCCESS) {
-					  cout << typeBible.error(result) << endl;
-					  break;
-				  }
-				  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-				  cout << "<p>"
-					  << refObj.getBookName() << " " << **chapter << ":" << **verse
-					  << " "
-					  << (i + 1) << " "
-					  << verseObj.getVerse() << "</p>" << endl;
-				  verseObj = typeBible.nextVerse(result);
-
-
-			  }
-
-		  }
-	  }
+	  typeBible = Bible("/home/class/csc3004/Bibles/dby-complete");
   }
   if (**type == "Young's Literal Translation") {
-	  Bible typeBible("/home/class/csc3004/Bibles/ylt-complete");
-	  Ref refObj(bookNumber, chapterNumber, verseNumber);
-	  Verse verseObj = typeBible.lookup(refObj, result);
-	  if (multipleVerseNumbers >= 1) {
-		  for (int i = 0; i < multipleVerseNumbers; i++) {
-			  if (validInput) {
-				  if (result != OTHER && result != SUCCESS) {
-					  cout << typeBible.error(result) << endl;
-					  break;
-				  }
-				  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-				  cout << "<p>"
-					  << refObj.getBookName() << " " << **chapter << ":" << **verse
-					  << " "
-					  << (i + 1) << " "
-					  << verseObj.getVerse() << "</p>" << endl;
-				  verseObj = typeBible.nextVerse(result);
-
-
-			  }
-
-		  }
-	  }
+	  typeBible = Bible("/home/class/csc3004/Bibles/ylt-complete");
   }
   if (**type == "Webster Translation") {
-	  Bible typeBible("/home/class/csc3004/Bibles/webster-complete");
-	  Ref refObj(bookNumber, chapterNumber, verseNumber);
-	  Verse verseObj = typeBible.lookup(refObj, result);
-	  if (multipleVerseNumbers >= 1) {
-		  for (int i = 0; i < multipleVerseNumbers; i++) {
-			  if (validInput) {
-				  if (result != OTHER && result != SUCCESS) {
-					  cout << typeBible.error(result) << endl;
-					  break;
-				  }
-				  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-				  cout << "<p>"
-					  << refObj.getBookName() << " " << **chapter << ":" << **verse
-					  << " "
-					  << (i + 1) << " "
-					  << verseObj.getVerse() << "</p>" << endl;
-				  verseObj = typeBible.nextVerse(result);
-
-
-			  }
-
-		  }
-	  }
+	  typeBible = Bible("/home/class/csc3004/Bibles/webster-complete");
   }
 
-  //Ref refObj(bookNumber, chapterNumber, verseNumber);
-  //Verse verseObj = typeBible.lookup(refObj,result);
-  //if (multipleVerseNumbers >= 1) {
-	 // for (int i = 0; i < multipleVerseNumbers; i++) {
-		//  if (validInput) {
-		//	  if (result != OTHER && result != SUCCESS) {
-		//		  cout << typeBible.error(result) << endl;
-		//		  break;
-		//	  }
-		//	  // cout << "Search Type: <b>" << **st << "</b>" << endl;
-		//	  cout << "<p>"
-		//		  << refObj.getBookName() << " " << **chapter << ":" << **verse
-		//		  << " "
-		//		  << (i+1) << " "
-		//		  << verseObj.getVerse() << "</p>" << endl;
-		//	  verseObj = typeBible.nextVerse(result);
-		//  
-		//	  
-		//  }
-		//  
-	 // }
-  //}
+  Ref refObj(bookNumber, chapterNumber, verseNumber);
+  Verse verseObj = typeBible.lookup(refObj,result);
+  if (multipleVerseNumbers >= 1) {
+	  for (int i = 0; i < multipleVerseNumbers; i++) {
+		  if (validInput) {
+			  if (result != OTHER && result != SUCCESS) {
+				  cout << typeBible.error(result) << endl;
+				  break;
+			  }
+			  // cout << "Search Type: <b>" << **st << "</b>" << endl;
+			  cout << "<p>"
+				  << typeBible.getCurrentRef().getBookName() << " " << typeBible.getCurrentRef().getChap() << ":" << typeBible.getCurrentRef().getVerse()
+				  << " "
+				  << verseObj.getVerse() << "</p>" << endl;
+			  verseObj = typeBible.nextVerse(result);
+		  
+			  
+		  }
+		  
+	  }
+  }
   
 
   /* SEND BACK THE RESULTS
